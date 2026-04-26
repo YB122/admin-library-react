@@ -1,0 +1,119 @@
+.eyeToggle {
+  width: 56px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.eye {
+  width: 48px;
+  height: 32px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #cbd5e1;
+  transition: border-color 300ms ease;
+}
+
+.eyeDark {
+  border-color: #0f172a;
+}
+
+.sclera {
+  width: 100%;
+  height: 100%;
+  background-color: #0f172a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 300ms ease;
+}
+
+.scleraDark {
+  background-color: #fff;
+}
+
+.iris {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition:
+    background-color 300ms ease,
+    transform 300ms ease;
+}
+
+.irisDark {
+  background-color: #6366f1;
+  transform: scale(0.9);
+}
+
+.pupil {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #000;
+  transition:
+    width 180ms ease,
+    height 180ms ease;
+}
+
+.pupilDark {
+  width: 20px;
+  height: 20px;
+}
+
+.highlight {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  top: 4px;
+  right: 4px;
+}
+
+.eyelid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0f172a;
+  border-radius: 50%;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 180ms ease-in;
+}
+
+.eyelidDark {
+  background-color: #fff;
+}
+
+.blinking .eyelid {
+  transform: scaleY(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyelid {
+    transition: none;
+  }
+
+  .eye,
+  .sclera,
+  .iris,
+  .pupil {
+    transition: none;
+  }
+}
