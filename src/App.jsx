@@ -13,26 +13,35 @@ import ProtectedRoute from "./component/ProtectedRoute/ProtectedRoute";
 import AuthLayout from "./component/AuthLayout/AuthLayout";
 import BlankLayout from "./component/BlankLayout/BlankLayout";
 import { Toaster } from "react-hot-toast";
+import AnimatedThemeTogglerDemo from "./component/AnimatedThemeToggler/AnimatedThemeTogglerDemo";
 const routes = createBrowserRouter([
   {
     path: "/login",
     element: (
       <GuestRoute>
-        <AuthLayout>
-          <Login />
-        </AuthLayout>
+        <AuthLayout />
       </GuestRoute>
     ),
+    children: [
+      {
+        index: true,
+        element: <Login />,
+      },
+    ],
   },
   {
     path: "/register",
     element: (
       <GuestRoute>
-        <AuthLayout>
-          <Register />
-        </AuthLayout>
+        <AuthLayout />
       </GuestRoute>
     ),
+    children: [
+      {
+        index: true,
+        element: <Register />,
+      },
+    ],
   },
   {
     path: "/",
@@ -67,6 +76,14 @@ const routes = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Users />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/theme-demo",
+        element: (
+          <ProtectedRoute>
+            <AnimatedThemeTogglerDemo />
           </ProtectedRoute>
         ),
       },

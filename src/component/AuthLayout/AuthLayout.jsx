@@ -28,7 +28,7 @@ export default function AuthLayout() {
             backgroundImage: 'url("/src/assets/library.png")',
           }}
         >
-          <div className={styles.leftTop}>
+          {/* <div className={styles.leftTop}>
             <span className={styles.logo}>AMU</span>
             <button className={styles.backBtn} type="button">
               ← Back to website
@@ -45,7 +45,7 @@ export default function AuthLayout() {
               <span className={styles.dot} />
               <span className={styles.dot} />
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Form Panel */}

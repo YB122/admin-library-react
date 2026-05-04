@@ -1,0 +1,150 @@
+.themeToggle {
+  position: relative;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #64748b;
+}
+
+.themeToggle:hover {
+  background-color: rgba(100, 116, 139, 0.1);
+  transform: scale(1.05);
+}
+
+.themeToggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.toggleIcon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.toggleIcon svg {
+  width: 60%;
+  height: 60%;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sunIcon {
+  color: #f59e0b;
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.moonIcon {
+  color: #6366f1;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-180deg) scale(0.8);
+}
+
+.dark .sunIcon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(180deg) scale(0.8);
+}
+
+.dark .moonIcon {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.transitionIndicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* View transition styles */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* Dark mode specific styles for the toggle */
+.dark .themeToggle {
+  color: #94a3b8;
+}
+
+.dark .themeToggle:hover {
+  background-color: rgba(148, 163, 184, 0.1);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .themeToggle,
+  .toggleIcon,
+  .toggleIcon svg,
+  .sunIcon,
+  .moonIcon {
+    transition: none;
+  }
+  
+  .transitionIndicator {
+    animation: none;
+  }
+}
+
+/* Shape-specific hover effects */
+.themeToggle:hover .toggleIcon {
+  transform: rotate(180deg);
+}
+
+.dark .themeToggle:hover .toggleIcon {
+  transform: rotate(-180deg);
+}
+
+/* Focus styles for accessibility */
+.themeToggle:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.dark .themeToggle:focus-visible {
+  outline-color: #60a5fa;
+}

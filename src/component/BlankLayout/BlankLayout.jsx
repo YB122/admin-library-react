@@ -1,5 +1,5 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import Footer from "../Footer/Footer";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
+
 import ToggleMode from "../ToggleMode/ToggleMode";
 import { useContext, useEffect } from "react";
 import { User } from "../../contexts/UserContext";
@@ -7,8 +7,16 @@ import { initFlowbite } from "flowbite";
 
 export default function BlankLayout() {
   const navigate = useNavigate();
-  const { userRole, userData } = useContext(User);
-  console.log(userRole, userData);
+  const location = useLocation();
+  const { userRole, userData, setUserToken, setUserData, setUserRole } =
+    useContext(User);
+
+  // Helper function to check if a link is active
+  const isActive = (path) => {
+    if (path === "/" && location.pathname === "/") return true;
+    if (path !== "/" && location.pathname.startsWith(path)) return true;
+    return false;
+  };
   useEffect(() => {
     initFlowbite();
   }, []);
@@ -16,7 +24,23 @@ export default function BlankLayout() {
     localStorage.removeItem("userToken");
     localStorage.removeItem("userData");
     localStorage.removeItem("userRole");
+    setUserToken(null);
+    setUserData(null);
+    setUserRole(null);
     navigate("/login");
+  }
+  function closeSidebar() {
+    const sidebar = document.getElementById("top-bar-sidebar");
+    if (sidebar && window.innerWidth < 640) {
+      sidebar.classList.add("-translate-x-full");
+    }
+  }
+
+  function closeDropdown() {
+    const dropdown = document.getElementById("dropdown-user");
+    if (dropdown) {
+      dropdown.classList.add("hidden");
+    }
   }
   return (
     <div className="min-h-screen">
@@ -92,40 +116,143 @@ export default function BlankLayout() {
                   <ul className="p-2 text-sm text-body font-medium" role="none">
                     <li>
                       <Link
-                        to="#"
+                        to="/"
                         className="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
                         role="menuitem"
+                        onClick={closeDropdown}
                       >
-                        Dashboard
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M10 6.025A7.5 7.5 0 1 0 17.975 14H10V6.025Z"
+                          />
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13.5 3c-.169 0-.334.014-.5.025V11h7.975c.011-.166.025-.331.025-.5A7.5 7.5 0 0 0 13.5 3Z"
+                          />
+                        </svg>
+                        Overview
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="#"
+                        to="/books"
                         className="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
                         role="menuitem"
+                        onClick={closeDropdown}
                       >
-                        Settings
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+                          />
+                        </svg>
+                        Books
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="#"
+                        to="/users"
                         className="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
                         role="menuitem"
+                        onClick={closeDropdown}
                       >
-                        Earnings
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 13h3.439a.991.991 0 0 1 .908.6 3.978 3.978 0 0 0 7.306 0 .99.99 0 0 1 .908-.6H20M4 13v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6M4 13l2-9h12l2 9M9 7h6m-7 3h8"
+                          />
+                        </svg>
+                        Members
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to="#"
+                        to="/transactions"
                         className="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
                         role="menuitem"
+                        onClick={closeDropdown}
+                      >
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeWidth={2}
+                            d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                          />
+                        </svg>
+                        Transactions
+                      </Link>
+                    </li>
+                    <li>
+                      <button
                         onClick={signOut}
+                        className="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded text-left"
+                        role="menuitem"
                       >
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                          />
+                        </svg>
                         Sign out
-                      </Link>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -139,7 +266,7 @@ export default function BlankLayout() {
         className="fixed top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-neutral-primary-soft border-e border-default">
+        <div className="h-full px-3 py-10 overflow-y-auto bg-neutral-primary-soft border-e border-default">
           <Link to="/" className="flex items-center ps-2.5 mb-5">
             <span className="self-center text-lg text-heading font-semibold whitespace-nowrap">
               Library Admin
@@ -149,10 +276,15 @@ export default function BlankLayout() {
             <li>
               <Link
                 to="/"
-                className="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group"
+                onClick={closeSidebar}
+                className={`flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group ${
+                  isActive("/") ? "bg-neutral-tertiary text-fg-brand" : ""
+                }`}
               >
                 <svg
-                  className="w-5 h-5 transition duration-75 group-hover:text-fg-brand"
+                  className={`w-5 h-5 transition duration-75 group-hover:text-fg-brand ${
+                    isActive("/") ? "text-fg-brand" : ""
+                  }`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -181,10 +313,15 @@ export default function BlankLayout() {
             <li>
               <Link
                 to="/books"
-                className="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group"
+                onClick={closeSidebar}
+                className={`flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group ${
+                  isActive("/books") ? "bg-neutral-tertiary text-fg-brand" : ""
+                }`}
               >
                 <svg
-                  className="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
+                  className={`shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand ${
+                    isActive("/books") ? "text-fg-brand" : ""
+                  }`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -206,10 +343,15 @@ export default function BlankLayout() {
             <li>
               <Link
                 to="/users"
-                className="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group"
+                onClick={closeSidebar}
+                className={`flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group ${
+                  isActive("/users") ? "bg-neutral-tertiary text-fg-brand" : ""
+                }`}
               >
                 <svg
-                  className="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
+                  className={`shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand ${
+                    isActive("/users") ? "text-fg-brand" : ""
+                  }`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -231,10 +373,17 @@ export default function BlankLayout() {
             <li>
               <Link
                 to="/transactions"
-                className="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group"
+                onClick={closeSidebar}
+                className={`flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group ${
+                  isActive("/transactions")
+                    ? "bg-neutral-tertiary text-fg-brand"
+                    : ""
+                }`}
               >
                 <svg
-                  className="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
+                  className={`shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand ${
+                    isActive("/transactions") ? "text-fg-brand" : ""
+                  }`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}

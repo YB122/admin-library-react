@@ -18,14 +18,11 @@ export default function Overview() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          "http://localhost:3000/api/transactions/all-data",
-          {
-            headers: {
-              Authorization: `${userRole} ${userToken}`,
-            },
+        const response = await axios.get("/api/transactions/all-data", {
+          headers: {
+            Authorization: `${userRole} ${userToken}`,
           },
-        );
+        });
 
         setBooks(response.data.data.books);
         setMembers(response.data.data.users);
@@ -39,9 +36,6 @@ export default function Overview() {
 
     fetchData();
   }, []);
-  console.log(books);
-  console.log(members);
-  console.log(transactions);
 
   return (
     <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -343,7 +337,10 @@ export default function Overview() {
                       Member
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Date & Time
+                      Borrow Date
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      Return Date
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                       Status
@@ -360,15 +357,18 @@ export default function Overview() {
                         {transaction.userId?.name || "Unknown Member"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        {new Date(
-                          transaction.borrowDate || transaction.createdAt,
-                        ).toLocaleDateString()}{" "}
-                        {new Date(
-                          transaction.borrowDate || transaction.createdAt,
-                        ).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                        {transaction.borrowDate
+                          ? new Date(
+                              transaction.borrowDate,
+                            ).toLocaleDateString()
+                          : "N/A"}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {transaction.returnDate
+                          ? new Date(
+                              transaction.returnDate,
+                            ).toLocaleDateString()
+                          : "Not returned"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
