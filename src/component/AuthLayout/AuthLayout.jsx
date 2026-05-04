@@ -25,7 +25,7 @@ export default function AuthLayout() {
         <div
           className={styles.imagePanel}
           style={{
-            backgroundImage: 'url("/src/assets/library.png")',
+            backgroundImage: 'url("/assets/library.png")',
           }}
         >
           {/* <div className={styles.leftTop}>
