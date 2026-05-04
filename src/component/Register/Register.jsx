@@ -36,6 +36,9 @@ export default function Register() {
 
   useEffect(() => {
     initFlowbite();
+    const apiUrl = import.meta.env.VITE_API_URL; // This will be undefined, but that's ok - we'll use proxy
+    console.log("API URL from env:", import.meta.env.VITE_API_URL);
+    console.log("Final API URL:", apiUrl);
   }, []);
 
   const {
@@ -60,6 +63,7 @@ export default function Register() {
         role: "admin",
         confirmPassword: data.confirmPassword,
       };
+      console.log("API URL from env:", import.meta.env.VITE_API_URL);
       const response = await axios.post(`/api/users/register`, submitData);
 
       setIsRegistered(true);
