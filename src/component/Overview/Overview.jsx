@@ -18,11 +18,14 @@ export default function Overview() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/api/transactions/all-data", {
-          headers: {
-            Authorization: `${userRole} ${userToken}`,
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/transactions/all-data`,
+          {
+            headers: {
+              Authorization: `${userRole} ${userToken}`,
+            },
           },
-        });
+        );
 
         setBooks(response.data.data.books);
         setMembers(response.data.data.users);

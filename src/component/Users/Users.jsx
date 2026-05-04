@@ -50,12 +50,15 @@ export default function Users() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/users/users", {
-        headers: {
-          Authorization: `${userRole} ${userToken}`,
-          "Content-Type": "application/json",
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/users/users`,
+        {
+          headers: {
+            Authorization: `${userRole} ${userToken}`,
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
       const usersData = Array.isArray(response.data.data)
         ? response.data.data
         : [];
@@ -83,7 +86,7 @@ export default function Users() {
 
       if (result.isConfirmed) {
         await axios.put(
-          `/api/users/ban-user/${userId}`,
+          `${import.meta.env.VITE_API_URL}/api/users/ban-user/${userId}`,
           {},
           {
             headers: {
@@ -122,7 +125,7 @@ export default function Users() {
 
       if (result.isConfirmed) {
         await axios.put(
-          `/api/users/unban-user/${userId}`,
+          `${import.meta.env.VITE_API_URL}/api/users/unban-user/${userId}`,
           {},
           {
             headers: {

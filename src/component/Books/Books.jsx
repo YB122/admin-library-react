@@ -34,9 +34,12 @@ export default function Books() {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/books", {
-        headers: { Authorization: `${userRole} ${userToken}` },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/books`,
+        {
+          headers: { Authorization: `${userRole} ${userToken}` },
+        },
+      );
       const data = response.data.data || response.data;
       setBooks(data);
       setFilteredBooks(data);
@@ -50,7 +53,7 @@ export default function Books() {
   const createBook = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/books", formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/books`, formData, {
         headers: { Authorization: `${userRole} ${userToken}` },
       });
       setShowCreateModal(false);
@@ -80,9 +83,12 @@ export default function Books() {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`/api/books/${bookToDelete}`, {
-        headers: { Authorization: `${userRole} ${userToken}` },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/books/${bookToDelete}`,
+        {
+          headers: { Authorization: `${userRole} ${userToken}` },
+        },
+      );
       setShowDeleteAlert(false);
       fetchBooks();
       toast.success("Deleted successfully!");
@@ -94,8 +100,8 @@ export default function Books() {
   const toggleBookStatus = async (bookId, currentAdminStatus) => {
     try {
       const endpoint = currentAdminStatus
-        ? `/api/books/ban-book/${bookId}`
-        : `/api/books/unban-book/${bookId}`;
+        ? `${import.meta.env.VITE_API_URL}/api/books/ban-book/${bookId}`
+        : `${import.meta.env.VITE_API_URL}/api/books/unban-book/${bookId}`;
 
       await axios.put(
         endpoint,

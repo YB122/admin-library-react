@@ -13,12 +13,15 @@ export default function Transactions() {
     const fetchTransactions = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("/api/transactions/admin", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${userRole} ${userToken}`,
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/transactions/admin`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${userRole} ${userToken}`,
+            },
           },
-        });
+        );
         setTransactions(response.data.data);
         setError(null);
       } catch (err) {
@@ -38,7 +41,7 @@ export default function Transactions() {
   const returnBook = async (transactionId) => {
     try {
       const response = await axios.put(
-        `/api/transactions/return/${transactionId}`,
+        `${import.meta.env.VITE_API_URL}/api/transactions/return/${transactionId}`,
         {},
         {
           headers: {

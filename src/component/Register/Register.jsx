@@ -64,7 +64,10 @@ export default function Register() {
         confirmPassword: data.confirmPassword,
       };
       console.log("API URL from env:", import.meta.env.VITE_API_URL);
-      const response = await axios.post(`/api/users/register`, submitData);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/users/register`,
+        submitData,
+      );
 
       setIsRegistered(true);
 
