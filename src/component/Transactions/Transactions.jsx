@@ -25,8 +25,14 @@ export default function Transactions() {
         setTransactions(response.data.data);
         setError(null);
       } catch (err) {
-        setError(err.message || "An error occurred");
-        console.error("Error fetching transactions:", err);
+        // If 404 error, treat as empty transactions
+        if (err.response?.status === 404) {
+          setTransactions([]);
+          setError(null);
+        } else {
+          setError(err.message || "An error occurred");
+          console.error("Error fetching transactions:", err);
+        }
       } finally {
         setLoading(false);
       }
@@ -193,6 +199,32 @@ export default function Transactions() {
                 </svg>
               </div>
               <p className="text-red-600 dark:text-red-400">Error: {error}</p>
+            </div>
+          )}
+
+          {!loading && !error && transactions.length === 0 && (
+            <div className="p-8 text-center">
+              <div className="text-gray-400 dark:text-gray-500 mb-2">
+                <svg
+                  className="w-16 h-16 mx-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 00-.293.707V16l-2.414-2.414a1 1 0 00-.707-.293H4"
+                  />
+                </svg>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-lg font-medium">
+                No transactions found
+              </p>
+              <p className="text-gray-500 dark:text-gray-500 text-sm mt-2">
+                There are currently no library transactions to display.
+              </p>
             </div>
           )}
 
@@ -523,29 +555,6 @@ export default function Transactions() {
                   </div>
                 </div>
               ))}
-            </div>
-          )}
-
-          {!loading && !error && transactions.length === 0 && (
-            <div className="p-8 text-center">
-              <div className="text-gray-400 dark:text-gray-500 mb-4">
-                <svg
-                  className="w-16 h-16 mx-auto"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              </div>
-              <p className="text-gray-600 dark:text-gray-400">
-                No transactions found
-              </p>
             </div>
           )}
         </div>

@@ -1,21 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
-import styles from './AnimatedThemeToggler.module.css';
+import React, { useEffect, useState, useRef } from "react";
+import styles from "./AnimatedThemeToggler.module.css";
 
 const SHAPE_VARIANTS = {
-  circle: 'circle',
-  square: 'square', 
-  rectangle: 'rectangle',
-  triangle: 'triangle',
-  diamond: 'diamond',
-  hexagon: 'hexagon',
-  star: 'star'
+  circle: "circle",
+  square: "square",
+  rectangle: "rectangle",
+  triangle: "triangle",
+  diamond: "diamond",
+  hexagon: "hexagon",
+  star: "star",
 };
 
-export default function AnimatedThemeToggler({ 
-  shape = 'circle',
+export default function AnimatedThemeToggler({
+  shape = "circle",
   duration = 400,
   fromCenter = false,
-  size = 48 
+  size = 48,
 }) {
   const [isDark, setIsDark] = useState(() => {
     return (
@@ -24,7 +24,7 @@ export default function AnimatedThemeToggler({
         window.matchMedia("(prefers-color-scheme: dark)").matches)
     );
   });
-  
+
   const [isTransitioning, setIsTransitioning] = useState(false);
   const buttonRef = useRef(null);
 
@@ -43,29 +43,29 @@ export default function AnimatedThemeToggler({
     switch (shape) {
       case SHAPE_VARIANTS.circle:
         return `circle(${maxRadius}px at ${x}px ${y}px)`;
-      
+
       case SHAPE_VARIANTS.square:
         const squareSize = maxRadius * 1.5;
         return `polygon(${x - squareSize}px ${y - squareSize}px, ${x + squareSize}px ${y - squareSize}px, ${x + squareSize}px ${y + squareSize}px, ${x - squareSize}px ${y + squareSize}px)`;
-      
+
       case SHAPE_VARIANTS.rectangle:
         const rectWidth = maxRadius * 2;
         const rectHeight = maxRadius;
         return `polygon(${x - rectWidth}px ${y - rectHeight}px, ${x + rectWidth}px ${y - rectHeight}px, ${x + rectWidth}px ${y + rectHeight}px, ${x - rectWidth}px ${y + rectHeight}px)`;
-      
+
       case SHAPE_VARIANTS.triangle:
         const triangleSize = maxRadius * 1.8;
         return `polygon(${x}px ${y - triangleSize}px, ${x - triangleSize}px ${y + triangleSize}px, ${x + triangleSize}px ${y + triangleSize}px)`;
-      
+
       case SHAPE_VARIANTS.diamond:
         const diamondSize = maxRadius * 1.5;
         return `polygon(${x}px ${y - diamondSize}px, ${x + diamondSize}px ${y}px, ${x}px ${y + diamondSize}px, ${x - diamondSize}px ${y}px)`;
-      
+
       case SHAPE_VARIANTS.hexagon:
         const hexSize = maxRadius * 1.3;
         const hexHeight = hexSize * 0.866;
-        return `polygon(${x}px ${y - hexSize}px, ${x + hexHeight}px ${y - hexSize/2}px, ${x + hexHeight}px ${y + hexSize/2}px, ${x}px ${y + hexSize}px, ${x - hexHeight}px ${y + hexSize/2}px, ${x - hexHeight}px ${y - hexSize/2}px)`;
-      
+        return `polygon(${x}px ${y - hexSize}px, ${x + hexHeight}px ${y - hexSize / 2}px, ${x + hexHeight}px ${y + hexSize / 2}px, ${x}px ${y + hexSize}px, ${x - hexHeight}px ${y + hexSize / 2}px, ${x - hexHeight}px ${y - hexSize / 2}px)`;
+
       case SHAPE_VARIANTS.star:
         const outerRadius = maxRadius * 1.4;
         const innerRadius = outerRadius * 0.4;
@@ -77,8 +77,8 @@ export default function AnimatedThemeToggler({
           const py = y + Math.sin(angle) * radius;
           starPoints.push(`${px}px ${py}px`);
         }
-        return `polygon(${starPoints.join(', ')})`;
-      
+        return `polygon(${starPoints.join(", ")})`;
+
       default:
         return `circle(${maxRadius}px at ${x}px ${y}px)`;
     }
@@ -87,10 +87,12 @@ export default function AnimatedThemeToggler({
   const handleToggle = async (e) => {
     if (isTransitioning) return;
 
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     if (prefersReduced || !document.startViewTransition) {
-      setIsDark(prev => !prev);
+      setIsDark((prev) => !prev);
       return;
     }
 
@@ -99,7 +101,7 @@ export default function AnimatedThemeToggler({
     try {
       const button = buttonRef.current;
       const rect = button.getBoundingClientRect();
-      
+
       let x, y;
       if (fromCenter) {
         x = window.innerWidth / 2;
@@ -113,44 +115,43 @@ export default function AnimatedThemeToggler({
         Math.sqrt(x * x + y * y),
         Math.sqrt((window.innerWidth - x) ** 2 + y * y),
         Math.sqrt(x ** 2 + (window.innerHeight - y) ** 2),
-        Math.sqrt((window.innerWidth - x) ** 2 + (window.innerHeight - y) ** 2)
+        Math.sqrt((window.innerWidth - x) ** 2 + (window.innerHeight - y) ** 2),
       );
 
       const transition = document.startViewTransition(() => {
-        setIsDark(prev => !prev);
+        setIsDark((prev) => !prev);
       });
 
       await transition.ready;
 
       const clipPath = calculateShapePath(shape, x, y, maxRadius);
-      
+
       document.documentElement.animate(
-        { clipPath: [clipPath, 'inset(0)'] },
+        { clipPath: [clipPath, "inset(0)"] },
         {
           duration,
-          easing: shape === SHAPE_VARIANTS.star ? 'linear' : 'ease-in-out',
-          fill: 'forwards',
-          pseudoElement: '::view-transition-new(root)'
-        }
+          easing: shape === SHAPE_VARIANTS.star ? "linear" : "ease-in-out",
+          fill: "forwards",
+          pseudoElement: "::view-transition-new(root)",
+        },
       );
 
       document.documentElement.animate(
-        { clipPath: ['inset(0)', clipPath] },
+        { clipPath: ["inset(0)", clipPath] },
         {
           duration,
-          easing: shape === SHAPE_VARIANTS.star ? 'linear' : 'ease-in-out',
-          fill: 'forwards',
-          pseudoElement: '::view-transition-old(root)'
-        }
+          easing: shape === SHAPE_VARIANTS.star ? "linear" : "ease-in-out",
+          fill: "forwards",
+          pseudoElement: "::view-transition-old(root)",
+        },
       );
 
       transition.finished.finally(() => {
         setIsTransitioning(false);
       });
-
     } catch (error) {
-      console.warn('View transition failed, falling back:', error);
-      setIsDark(prev => !prev);
+      console.warn("View transition failed, falling back:", error);
+      setIsDark((prev) => !prev);
       setIsTransitioning(false);
     }
   };
@@ -166,36 +167,36 @@ export default function AnimatedThemeToggler({
       aria-pressed={isDark}
       disabled={isTransitioning}
     >
-      <div className={`${styles.toggleIcon} ${isDark ? styles.dark : styles.light}`}>
-        <svg 
-          className={styles.sunIcon} 
-          viewBox="0 0 24 24" 
-          fill="none" 
+      <div
+        className={`${styles.toggleIcon} ${isDark ? styles.dark : styles.light}`}
+      >
+        <svg
+          className={styles.sunIcon}
+          viewBox="0 0 24 24"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2"/>
-          <path 
-            d="M12 1v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" 
-            stroke="currentColor" 
-            strokeWidth="2" 
+          <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
+          <path
+            d="M12 1v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+            stroke="currentColor"
+            strokeWidth="2"
             strokeLinecap="round"
           />
         </svg>
-        <svg 
-          className={styles.moonIcon} 
-          viewBox="0 0 24 24" 
-          fill="none" 
+        <svg
+          className={styles.moonIcon}
+          viewBox="0 0 24 24"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path 
-            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" 
+          <path
+            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
             fill="currentColor"
           />
         </svg>
       </div>
-      {isTransitioning && (
-        <div className={styles.transitionIndicator} />
-      )}
+      {isTransitioning && <div className={styles.transitionIndicator} />}
     </button>
   );
 }
