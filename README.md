@@ -195,6 +195,22 @@ src/
 - Error handling and loading states
 - Form validation with user feedback
 
+## 🔗 Related Projects & Links
+
+### 📚 Library Management System
+
+- **Backend API**: https://github.com/YB122/Library
+- **Admin Dashboard**: https://github.com/YB122/admin-library-react
+- **Admin Dashboard Demo**: https://library-alex.vercel.app/
+- **Alex Library Frontend**: https://github.com/YB122/Alex-Library
+- **Alex Library Demo**: https://alex-library-next.vercel.app/
+
+### 🚀 Quick Links
+
+- **Live Demo**: [Admin Dashboard](https://library-alex.vercel.app/)
+- **Source Code**: [Backend](https://github.com/YB122/Library) | [Frontend](https://github.com/YB122/admin-library-react)
+- **Alex Library**: [Code](https://github.com/YB122/Alex-Library) | [Demo](https://alex-library-next.vercel.app/)
+
 ## 🤝 Contributing
 
 1. Fork the repository
