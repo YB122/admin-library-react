@@ -42,6 +42,10 @@ export default function Login() {
         toast.error("You are not authorized to login");
         return;
       }
+      if (res.data.data.role !== "admin") {
+        toast.error("You are not authorized to login");
+        return;
+      }
       setUserRole(res.data.data.role);
       setUserData(res.data.data);
       setUserToken(res.data.token);
